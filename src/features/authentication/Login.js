@@ -1,18 +1,18 @@
 import DoneIcon from "@mui/icons-material/Done";
 import { Box, Typography } from "@mui/material";
-import { default as React, useState } from "react";
+import { default as React, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import AuthPaper from "../../common/AuthPaper";
 import CustomButton from "../../common/CustomButton";
 import CustomTextField from "../../common/CustomTextField";
 import { COLORS } from "../../theme";
-import { Link,useNavigate } from "react-router-dom";
-import {useDispatch,useSelector} from "react-redux"
-import { selectAuthState,userLogin } from "./authSlice";
+import { selectAuthState, userLogin } from "./authSlice";
 
 const Login = () => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
-  const {loginError}=useSelector(selectAuthState)
+  const {loginError,loggedUser}=useSelector(selectAuthState)
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -37,7 +37,7 @@ const Login = () => {
     }));
   };
 
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm =  (e) => {
     e.preventDefault();
     if (!userInfo.email && !userInfo.password) {
       setValidation({
@@ -47,9 +47,22 @@ const Login = () => {
       return;
     }
 
-    dispatch(userLogin(userInfo))
-    navigate('/home')
-  };
+     dispatch(userLogin(userInfo))
+     
+
+
+    
+
+    
+   
+  }
+
+  useEffect(()=>{
+    if(loggedUser.email){
+      navigate('/home')
+    }
+    
+  },[loggedUser])
 
   return (
     <AuthPaper>

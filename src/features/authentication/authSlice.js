@@ -32,7 +32,8 @@ export const authSlice = createSlice({
       },
     },
     userLogin: {
-      reducer: (state, action) => {
+      reducer: (state, action,navigate) => {
+        console.log(action,navigate)
         const { email, password } = action.payload;
         const existingUser = state.registeredUser.find(
           (user) => user.email === email && user.password === password

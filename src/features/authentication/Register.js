@@ -1,16 +1,16 @@
 import DoneIcon from "@mui/icons-material/Done";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Box, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from 'react-router-dom';
 import AuthPaper from "../../common/AuthPaper";
 import CustomButton from "../../common/CustomButton";
 import CustomTextField from "../../common/CustomTextField";
 import ValidationCriteria from "../../common/ValidationCriteria";
 import { COLORS } from "../../theme";
 import { formValidation } from "../../Utlis/helpers";
-import {Link,useNavigate} from 'react-router-dom'
-import {useDispatch,useSelector} from "react-redux"
-import { userRegister } from "./authSlice";
+import { selectAuthState, userRegister } from "./authSlice";
 
 const Register = () => {
   
@@ -23,6 +23,7 @@ const Register = () => {
     email: false,
     password: false,
   });
+  const {loggedUser}=useSelector(selectAuthState)
   const navigate=useNavigate()
   const dispatch=useDispatch()
 
@@ -42,8 +43,14 @@ const Register = () => {
   const handleSubmitForm=(e)=>{
    e.preventDefault()
      dispatch(userRegister(userInfo))
-     navigate('/home')
+   
   }
+
+  useEffect(()=>{
+    if(loggedUser.email){
+      navigate('/home')
+    }
+  },[loggedUser])
 
   const canSubmit= Boolean(validation.email) && Boolean(validation.password) && Boolean(userInfo.name)
 

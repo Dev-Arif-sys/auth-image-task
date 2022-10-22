@@ -1,8 +1,13 @@
 import React from 'react'
+import Images from './Images/Images'
+import Location from './Location/Location'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div>
+      <Location/>
+      <Images/>
+    </div>
   )
 }
 
